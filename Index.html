@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FWC Inspection Checklist</title>
+<style>
+*{box-sizing:border-box} body{font-family:Arial,sans-serif;background:#f2f2f2;margin:0;color:#111}
+.app{max-width:1100px;margin:auto;padding:18px}.toolbar{position:sticky;top:0;z-index:5;background:#fff;padding:12px;border:1px solid #ccc;border-radius:10px;margin-bottom:15px;display:flex;gap:8px;flex-wrap:wrap}
+button{border:0;border-radius:7px;padding:10px 16px;cursor:pointer;font-weight:bold} .primary{background:#1769aa;color:#fff}.danger{background:#b3261e;color:#fff}.save{background:#2e7d32;color:#fff}
+.sheet{background:white;padding:24px;border:1px solid #bbb;box-shadow:0 2px 8px #bbb}
+h1{text-align:center;font-size:20px;margin:0 0 5px} .subtitle{text-align:center;margin-bottom:20px}
+h2{font-size:14px;background:#e7eef7;padding:7px;border:1px solid #bbb;margin:18px 0 8px}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{display:flex;gap:6px;align-items:center}.field label{font-weight:bold;min-width:155px}
+input[type=text],input[type=date],input[type=datetime-local],input[type=number],textarea,select{width:100%;padding:7px;border:1px solid #aaa;border-radius:4px;font:inherit}
+table{width:100%;border-collapse:collapse;margin:6px 0}th,td{border:1px solid #999;padding:7px;vertical-align:middle}th{background:#f3f3f3}
+.center{text-align:center}.remarks{margin:7px 0 12px}.remarks textarea{min-height:48px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.skill{border:1px solid #aaa;padding:8px}
+.photos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.photo-box{border:1px solid #999;min-height:210px;padding:8px;text-align:center}
+.photo-box img{max-width:100%;max-height:170px;display:none;margin:5px auto}.photo-caption{margin-top:6px}
+.small{font-size:12px;color:#555}
+@media(max-width:700px){.info,.grid,.photos{grid-template-columns:1fr}.field{display:block}.field label{display:block;margin-bottom:4px}}
+@media print{
+ body{background:#fff}.app{padding:0;max-width:none}.toolbar{display:none}.sheet{border:0;box-shadow:none;padding:8mm}
+ input,select,textarea{border:0;padding:0;background:transparent;appearance:none}
+ .small{display:none} h2{break-after:avoid}.photos{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="toolbar">
+<button class="primary" onclick="window.print()">🖨 Final Print / PDF</button>
+<button class="save" onclick="generateWordReport()">📄 Generate MS Word Report</button>
+<button class="save" onclick="saveData()">💾 Save</button>
+<button onclick="loadData()">↻ Load Saved</button>
+<button class="danger" onclick="newReport()">＋ New Report</button>
+<span class="small">Data is saved in this browser only.</span>
+</div>
+
+<div class="sheet" id="report">
+<h1>CHECK LIST FOR INSPECTION OF FAMILY WELFARE CENTER — 2026</h1>
+<div class="subtitle">IN <input id="district" style="width:180px"> DISTRICT &nbsp;&nbsp; BY <input id="by" style="width:180px"><br>
+FOR THE MONTH OF <input id="month" style="width:180px"> 20____</div>
+
+<h2>I. BASIC INFORMATION</h2>
+<div class="info">
+<div class="field"><label>Name of FWC:</label><input id="fwc"></div>
+<div class="field"><label>Inspected by (Name &amp; Designation):</label><input id="inspected"></div>
+<div class="field"><label>Date & time:</label><input id="inspectDate" type="datetime-local"></div>
+<div class="field"><label>Outlet:</label><select id="outlet"><option></option><option>Open</option><option>Closed</option><option>Opened</option></select></div>
+<div class="field"><label>Name of Incharge:</label><input id="incharge"></div>
+</div>
+
+<h2>I. MANAGEMENT ISSUES</h2><div class="remarks"><b>Remarks:</b><textarea id="management"></textarea></div>
+
+<h2>II. GENERAL DISPLAY (✓)</h2>
+<table><tr><th>Direction Board Installed</th><th>Sign Board Installed</th><th>Performance chart displayed</th><th>Inspection chart displayed</th></tr>
+<tr><td class="center"><select id="g0"><option></option><option>Yes</option><option>No</option></select></td><td class="center"><select id="g1"><option></option><option>Yes</option><option>No</option></select></td><td class="center"><select id="g2"><option></option><option>Yes</option><option>No</option></select></td><td class="center"><select id="g3"><option></option><option>Yes</option><option>No</option></select></td></tr></table>
+<div class="remarks"><b>Remarks:</b><textarea id="remarks2" placeholder="Remarks"></textarea></div>
+
+<h2>III. BUILDING (✓)</h2>
+<table><tr><th>Condition Satisfactory</th><th>Surrounding Condition Hygienic</th><th>Ventilation</th><th>Water Available</th><th>Electricity available</th></tr>
+<tr><td><select id="b0"><option></option><option>Yes</option><option>No</option></select></td><td><select id="b1"><option></option><option>Yes</option><option>No</option></select></td><td><select id="b2"><option></option><option>Yes</option><option>No</option></select></td><td><select id="b3"><option></option><option>Yes</option><option>No</option></select></td><td><select id="b4"><option></option><option>Yes</option><option>No</option></select></td></tr></table>
+<div class="remarks"><b>Remarks:</b><textarea id="remarks3" placeholder="Remarks"></textarea></div>
+
+<h2>IV. RECORD & REGISTER (✓)</h2>
+<table><tr><th>Stock registers up to date</th><th>Addressees in Daily Client Register</th><th>Client Record Card (CRC) maintained</th><th>Maintenance of approved tour programme of visits by FWA (M)</th><th>Registration of married couples by FWA (F)</th><th>Follow up visits by FWA (F)</th></tr><tr><td><select id="r0"><option></option><option>Yes</option><option>No</option></select></td><td><select id="r1"><option></option><option>Yes</option><option>No</option></select></td><td><select id="r2"><option></option><option>Yes</option><option>No</option></select></td><td><select id="r3"><option></option><option>Yes</option><option>No</option></select></td><td><select id="r4"><option></option><option>Yes</option><option>No</option></select></td><td><select id="r5"><option></option><option>Yes</option><option>No</option></select></td></tr></table>
+<div class="remarks"><b>Remarks:</b><textarea id="remarks4" placeholder="Remarks"></textarea></div>
+
+<h2>V. CONTRACEPTIVES STOCK & STORAGE CONDITION (✓)</h2>
+<table><tr><th>Are the contraceptives received regularly?</th><th>Date of last received</th><th>Storage condition satisfactory</th><th>All contraceptives available in sufficient quantity</th></tr>
+<tr><td><select id="c0"><option></option><option>Yes</option><option>No</option></select></td><td><input id="cdate" type="date"></td><td><select id="c2"><option></option><option>Yes</option><option>No</option></select></td><td><select id="c3"><option></option><option>Yes</option><option>No</option></select></td></tr></table>
+<div class="remarks"><b>Remarks:</b><textarea id="remarks5" placeholder="Remarks"></textarea></div>
+
+<h2>VI. GENERAL MEDICINE STOCK & STORAGE CONDITION (✓)</h2>
+<table><tr><th>Received regularly</th><th>Date of last received</th><th>Storage condition satisfactory</th><th>All G. Medicine available in sufficient quantity</th></tr>
+<tr><td><select id="m0"><option></option><option>Yes</option><option>No</option></select></td><td><input id="mdate" type="date"></td><td><select id="m2"><option></option><option>Yes</option><option>No</option></select></td><td><select id="m3"><option></option><option>Yes</option><option>No</option></select></td></tr></table>
+<div class="remarks"><b>Remarks:</b><textarea id="remarks6" placeholder="Remarks"></textarea></div>
+
+<h2>VII. IUCD KITS AND OTHER INSTRUMENTS (✓)</h2>
+<table><tr><th>Nos. of IUCD kits</th><th>IUCD kit/equipment condition satisfactory?</th><th>Boiler / sterilizer</th><th>BP apparatus</th><th>Adults & Baby weight machine</th></tr>
+<tr><td><input id="iucdNo" type="number"></td><td><select id="i1"><option></option><option>Yes</option><option>No</option></select></td><td><select id="i2"><option></option><option>Yes</option><option>No</option></select></td><td><select id="i3"><option></option><option>Yes</option><option>No</option></select></td><td><select id="i4"><option></option><option>Yes</option><option>No</option></select></td></tr></table>
+<div class="remarks"><b>Remarks:</b><textarea id="remarks7" placeholder="Remarks"></textarea></div>
+
+<h2>VIII. CHARTS AVAILABILITY (✓)</h2>
+<table><tr><th>Inspection charts available?</th><th>Friends of FWC charts available?</th><th>Monthly performance charts available?</th><th>RBM Maps available?</th><th>Any other</th></tr>
+<tr><td><select id="ch0"><option></option><option>Yes</option><option>No</option></select></td><td><select id="ch1"><option></option><option>Yes</option><option>No</option></select></td><td><select id="ch2"><option></option><option>Yes</option><option>No</option></select></td><td><select id="ch3"><option></option><option>Yes</option><option>No</option></select></td><td><select id="ch4"><option></option><option>Yes</option><option>No</option></select></td></tr></table>
+<div class="remarks"><b>Remarks:</b><textarea id="remarks8" placeholder="Remarks"></textarea></div>
+
+<h2>IX–XI. OTHER ASSESSMENTS</h2>
+<div class="grid">
+<div class="skill">IX. Social Mobilization – Pictorial evidence available?<select id="x9"><option></option><option>Yes</option><option>No</option></select><textarea id="rx9" placeholder="Remarks"></textarea></div>
+<div class="skill">X. IEC Material availability / dissemination<select id="x10"><option></option><option>Yes</option><option>No</option></select><textarea id="rx10" placeholder="Remarks"></textarea></div>
+<div class="skill">XI. Quality of care<select id="x11"><option></option><option>Yes</option><option>No</option></select><textarea id="rx11" placeholder="Remarks"></textarea></div>
+</div>
+
+<h2>XII. SKILLS OF SERVICE PROVIDER</h2>
+<div class="grid">
+<div class="skill">a) Screening of clients as per Medical Eligibility <select id="s0"><option></option><option>Yes</option><option>No</option></select></div>
+<div class="skill">b) Counseling of clients <select id="s1"><option></option><option>Yes</option><option>No</option></select></div>
+<div class="skill">c) Knowledge for side effect management <select id="s2"><option></option><option>Yes</option><option>No</option></select></div>
+<div class="skill">d) Knowledge of Infection prevention <select id="s3"><option></option><option>Yes</option><option>No</option></select></div>
+</div>
+<div class="remarks"><b>Remarks:</b><textarea id="remarks12" placeholder="Remarks"></textarea></div>
+
+<h2>XIII. REQUIREMENTS OF THE FWC</h2><textarea id="requirements" rows="4"></textarea>
+<h2>XIV. REMARKS & RECOMMENDATIONS</h2><textarea id="recommendations" rows="6"></textarea>
+
+<h2>XV. PICTORIAL EVIDENCE / PHOTO ATTACHMENTS</h2>
+<div class="photos">
+<div class="photo-box">
+<label><b>PHOTO 1</b><br><input type="file" accept="image/*" onchange="preview(this,1)"></label>
+<img id="img1" alt="Photo 1">
+<textarea class="photo-caption" id="cap1" placeholder="Photo caption / observation"></textarea>
+</div><div class="photo-box">
+<label><b>PHOTO 2</b><br><input type="file" accept="image/*" onchange="preview(this,2)"></label>
+<img id="img2" alt="Photo 2">
+<textarea class="photo-caption" id="cap2" placeholder="Photo caption / observation"></textarea>
+</div><div class="photo-box">
+<label><b>PHOTO 3</b><br><input type="file" accept="image/*" onchange="preview(this,3)"></label>
+<img id="img3" alt="Photo 3">
+<textarea class="photo-caption" id="cap3" placeholder="Photo caption / observation"></textarea>
+</div><div class="photo-box">
+<label><b>PHOTO 4</b><br><input type="file" accept="image/*" onchange="preview(this,4)"></label>
+<img id="img4" alt="Photo 4">
+<textarea class="photo-caption" id="cap4" placeholder="Photo caption / observation"></textarea>
+</div>
+</div>
+
+<div style="margin-top:25px;display:grid;grid-template-columns:1fr 1fr;gap:30px">
+<div>Dated: <input id="finalDate" type="date"></div>
+<div style="text-align:right">____________________________<br>(Signature)<br>Name & Designation of the Officer</div>
+</div>
+</div>
+</div>
+
+<script>
+const ids = Array.from(document.querySelectorAll('input[id],select[id],textarea[id]')).map(x=>x.id);
+function saveData(){
+  const data={};
+  ids.forEach(id=>{const e=document.getElementById(id); if(e.type!=='file') data[id]=e.value;});
+  localStorage.setItem('fwcInspectionReport',JSON.stringify(data));
+  alert('Report saved in this browser.');
+}
+function loadData(){
+  const raw=localStorage.getItem('fwcInspectionReport');
+  if(!raw){alert('No saved report found.');return}
+  const data=JSON.parse(raw);
+  Object.keys(data).forEach(id=>{const e=document.getElementById(id);if(e)e.value=data[id];});
+  alert('Saved report loaded.');
+}
+function newReport(){
+  if(!confirm('Start a new report? Unsaved data will be cleared.')) return;
+  document.querySelectorAll('input[id],select[id],textarea[id]').forEach(e=>{if(e.type!=='file')e.value='';});
+  document.querySelectorAll('.photo-box img').forEach(e=>{e.src='';e.style.display='none';});
+}
+function preview(input,n){
+  const file=input.files[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{const img=document.getElementById('img'+n);img.src=e.target.result;img.style.display='block';};
+  reader.readAsDataURL(file);
+}
+document.getElementById('inspectDate').value=new Date().toISOString().slice(0,16);
+document.getElementById('finalDate').value=new Date().toISOString().slice(0,10);
+</script>
+
+<script>
+function generateWordReport(){
+  const clone=document.getElementById("report").cloneNode(true);
+  clone.querySelectorAll("input, textarea, select").forEach(el=>{
+    if(el.type==="file") { el.remove(); return; }
+    let value=el.tagName.toLowerCase()==="select" ? el.options[el.selectedIndex]?.text||"" : el.value;
+    const span=document.createElement("span");
+    span.textContent=value;
+    span.style.cssText="display:inline-block;min-width:"+(el.offsetWidth||120)+"px;border-bottom:1px solid #555;padding:2px 4px;white-space:pre-wrap;";
+    el.replaceWith(span);
+  });
+  clone.querySelectorAll("img").forEach(img=>{ if(!img.src || img.src.startsWith("data:")) img.style.display="block"; });
+  const css=`body{font-family:Arial,sans-serif;margin:25px;color:#111}.sheet{background:#fff}.toolbar{display:none}h1{text-align:center;font-size:20px;margin-bottom:5px}.subtitle{text-align:center;margin-bottom:20px}h2{font-size:14px;background:#e7eef7;padding:7px;border:1px solid #bbb;margin:18px 0 8px}table{width:100%;border-collapse:collapse;margin:6px 0}th,td{border:1px solid #999;padding:7px;vertical-align:middle}th{background:#f3f3f3}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.skill{border:1px solid #aaa;padding:8px}.photos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.photo-box{border:1px solid #999;min-height:210px;padding:8px;text-align:center}.photo-box img{max-width:100%;max-height:170px;margin:5px auto}.photo-caption{margin-top:6px;white-space:pre-wrap}.remarks{margin:7px 0 12px}.remarks textarea{min-height:48px}`;
+  const html='<!DOCTYPE html><html><head><meta charset="utf-8"><style>'+css+'</style></head><body>'+clone.outerHTML+'</body></html>';
+  const blob=new Blob(['\ufeff',html],{type:'application/msword'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  const month=document.getElementById('month')?.value?.trim()||'Report';
+  a.download='FWC_Inspection_Report_'+month.replace(/[^a-z0-9_-]+/gi,'_')+'.doc';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+</script>
+</body>
+</html>
